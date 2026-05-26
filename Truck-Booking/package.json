@@ -1,0 +1,30 @@
+{
+  "name": "truck-booking-app",
+  "version": "1.0.0",
+  "description": "TruckSuvidha - Complete Truck Booking Platform",
+  "scripts": {
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install && cd ..",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd backend && npm run dev",
+    "client": "cd frontend && npm run dev",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "cd frontend && npm install && npm run build && cd .. && mkdir -p dist && cp -r frontend/dist/* dist/",
+    "create-admin": "cd backend && node createAdmin.js",
+    "upgrade-superadmin": "cd backend && node upgradeSuperAdmin.js",
+    "migrate-data": "cd backend && node migrateData.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.7.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": ["truck", "booking", "transport", "logistics"],
+  "author": "TruckSuvidha",
+  "license": "ISC"
+}
