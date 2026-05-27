@@ -17,7 +17,7 @@ import otpRoutes from './routes/otpRoutes.js';
 const app = express();
 
 // Configure CORS to allow the deployed frontend and local Vite dev ports.
-const productionFrontendURL = process.env.FRONTEND_URL || 'https://somya-truck-booking.vercel.app';
+const productionFrontendURL = process.env.FRONTEND_URL || 'https://truck-booking-rosy.vercel.app';
 const allowedOrigins = new Set([
   productionFrontendURL,
   'http://localhost:5173',

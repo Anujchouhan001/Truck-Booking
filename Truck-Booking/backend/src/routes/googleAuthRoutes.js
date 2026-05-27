@@ -16,7 +16,7 @@ router.get('/google',
 router.get('/google/callback',
     passport.authenticate('google', {
         session: false,
-        failureRedirect: `${process.env.FRONTEND_URL || (process.env.NODE_ENV === 'production' ? 'https://somya-truck-booking.vercel.app' : 'http://localhost:5173')}/login?error=google_auth_failed`
+        failureRedirect: `${process.env.FRONTEND_URL || (process.env.NODE_ENV === 'production' ? 'https://truck-booking-rosy.vercel.app' : 'http://localhost:5173')}/login?error=google_auth_failed`
     }),
     (req, res) => {
         try {
@@ -38,12 +38,12 @@ router.get('/google/callback',
             );
 
             // Redirect to frontend with token (and new flag if new user)
-            const frontendURL = process.env.FRONTEND_URL || (process.env.NODE_ENV === 'production' ? 'https://somya-truck-booking.vercel.app' : 'http://localhost:5173');
+            const frontendURL = process.env.FRONTEND_URL || (process.env.NODE_ENV === 'production' ? 'https://truck-booking-rosy.vercel.app' : 'http://localhost:5173');
             const newUserParam = isNewUser ? '&new=true' : '';
             res.redirect(`${frontendURL}/oauth/callback?token=${token}${newUserParam}`);
         } catch (error) {
             console.error('Google callback error:', error);
-            const frontendURL = process.env.FRONTEND_URL || (process.env.NODE_ENV === 'production' ? 'https://somya-truck-booking.vercel.app' : 'http://localhost:5173');
+            const frontendURL = process.env.FRONTEND_URL || (process.env.NODE_ENV === 'production' ? 'https://truck-booking-rosy.vercel.app' : 'http://localhost:5173');
             res.redirect(`${frontendURL}/login?error=token_generation_failed`);
         }
     }
