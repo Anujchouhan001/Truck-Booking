@@ -1,20 +1,13 @@
 let app;
-let initError = null;
+let connectDB;
 
-try {
-  const appModule = await import('../backend/src/app.js');
-  app = appModule.default;
-} catch (err) {
-  console.error('CRITICAL: Failed to load app module:', err);
-  initError = err;
-}
-
-let dbModule;
-try {
-  dbModule = await import('../backend/src/config/db.js');
-} catch (err) {
-  console.error('CRITICAL: Failed to load db module:', err);
-  initError = initError || err;
+async function loadModules() {
+  if (!app) {
+    const appModule = await import('../backend/src/app.js');
+    app = appModule.default || appModule;
+    const dbModule = await import('../backend/src/config/db.js');
+    connectDB = dbModule.connectDB;
+  }
 }
 
 function getMongoURI() {
@@ -22,12 +15,11 @@ function getMongoURI() {
 }
 
 export default async function handler(req, res) {
-  if (initError || !app) {
-    console.error('Server initialization failed:', initError);
-    return res.status(500).json({
-      message: 'Server initialization failed',
-      error: initError?.message || 'App module failed to load'
-    });
+  try {
+    await loadModules();
+  } catch (err) {
+    console.error('Failed to load backend modules:', err);
+    return res.status(500).json({ message: 'Server initialization failed', error: err.message });
   }
 
   const mongoURI = getMongoURI();
@@ -45,7 +37,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    await dbModule.connectDB(mongoURI);
+    await connectDB(mongoURI);
   } catch (error) {
     console.error('Database connection failed:', error);
     return res.status(500).json({ message: 'Database connection failed' });
